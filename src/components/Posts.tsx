@@ -33,6 +33,11 @@ export default function Posts({ searchBy }: PostProps) {
               </p>
               <h3 className="text-black">{item.title}</h3>
               <p className="text-black"> {item.postaus}</p>
+              <div className="flex justify-end">
+                <button className="h-5 border-none hover:underline">
+                  Reply
+                </button>
+              </div>
             </div>
           );
         })}
