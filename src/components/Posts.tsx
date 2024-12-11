@@ -48,14 +48,14 @@ export default function Posts({ searchBy }: PostProps) {
                 key={item.postId}
                 className="bg-white w-full rounded-lg mb-4 p-3 border-2 border-bor shadow-md"
               >
-                <p className="text-black">
+                <p className="text-black flex justify-between">
                   <strong>{item.school}</strong>
                   {"  "}
                   {item.postId}
+                  <p className="text-black"> {item.time}</p>
                 </p>
                 <h3 className="text-black">{item.title}</h3>
                 <p className="text-black"> {item.post}</p>
-                <p className="text-black"> {item.time}</p>
                 <div className="flex justify-end">
                   <button className="h-5 border-none hover:underline text-orange-500 text-md">
                     Reply

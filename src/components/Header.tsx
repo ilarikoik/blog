@@ -26,7 +26,7 @@ export default function Header() {
               LogIn
             </p>
           ) : (
-            <p className="text-red-500 font-semibold hover:shadow-md hover:shadow-red-700 border-2 border-postgray h-8 hover:border-red-300 p-3 rounded-md flex items-center ml-2">
+            <p className="text-red-500 font-semibold hover:shadow-md cursor-pointer hover:shadow-red-700 border-2 border-postgray h-8 hover:border-red-300 p-3 rounded-md flex items-center ml-2">
               LogOut
             </p>
           )}
