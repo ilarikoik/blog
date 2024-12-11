@@ -5,6 +5,8 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import app from "./firebaseConfig";
 
@@ -32,7 +34,8 @@ export const addPostData = async (data: newPost) => {
 export const getData = async () => {
   console.log("GET data käynnistyy...");
   try {
-    const querySnapshot = await getDocs(collection(db, "postCollection"));
+    const q = query(collection(db, "postCollection"), orderBy("time", "desc")); // ajaltaan uusin eka
+    const querySnapshot = await getDocs(q);
 
     // Convert querySnapshot to an array of newPost objects
     const posts: newPost[] = querySnapshot.docs.map((doc) => {
