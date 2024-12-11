@@ -32,11 +32,9 @@ function App() {
   useEffect(() => {
     const use = async () => {
       let use = await getData();
-      console.log(use);
       // aina tarkista että siellä on jotain muuten tulee se vi.. UNDEFINED
       if (use) {
         let sorted = SortPostByDate(use);
-        console.log(sorted);
       }
     };
     use();

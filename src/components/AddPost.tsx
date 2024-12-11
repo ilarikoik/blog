@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import done from "../lottie/done.json";
 import { addPostData } from "../firebase/db";
 import formatDate from "../hooks/formatDate";
+import { schools } from "../data/schools";
 
 interface Post {
   postId: string;
@@ -23,6 +24,7 @@ interface User {
 export default function AddPost({ user }: User) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [lottie, setLottie] = useState(false);
+  const [school, setSchool] = useState("");
   let counter = useRef<number>(20);
   const [newPost, setNewPost] = useState<Post>({
     postId: "",
@@ -78,6 +80,11 @@ export default function AddPost({ user }: User) {
     setNewPost({ ...newPost, [e.currentTarget.name]: e.currentTarget.value });
   };
 
+  const handleSchoolChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // muokataa objektia , attribuutti, arvo
+    setNewPost({ ...newPost, school: e.target.value });
+  };
+
   const options = {
     loop: false,
     animationData: done,
@@ -120,13 +127,28 @@ export default function AddPost({ user }: User) {
               onChange={handleInputChange}
             />
             <label htmlFor="postContent">School:</label>
-            <input
+            <select id="postContent" onChange={handleSchoolChange}>
+              {schools.length > 0 ? (
+                schools.map((item, index) => {
+                  return (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  );
+                })
+              ) : (
+                <option value="" disabled>
+                  No schools available
+                </option>
+              )}
+            </select>
+            {/*<input
               name="school"
               className="bg-postgray rounded-md m-1"
               type="text"
               value={newPost.school}
               onChange={handleInputChange}
-            />
+            />*/}
             <label htmlFor="postContent">Post Content:</label>
             <textarea
               className="bg-postgray rounded-md m-1"

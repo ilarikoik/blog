@@ -3,6 +3,8 @@ import examplePost from "../data/examplePost.json";
 import filterBySchool from "../hooks/filterPosts.tsx";
 import { getData } from "../firebase/db.tsx";
 import SortPostByDate from "../hooks/sortPostByDate.tsx";
+import { deleteDoc, doc, getFirestore } from "firebase/firestore";
+import { handleDelete } from "../hooks/handleDelete.tsx";
 interface PostProps {
   searchBy: string;
 }
@@ -13,6 +15,7 @@ interface newPost {
   post: string;
   time: string;
 }
+const db = getFirestore();
 
 export default function Posts({ searchBy }: PostProps) {
   const [post, setPost] = useState<newPost[]>(); // tulee olemaan taulukko täynnä objekteja
@@ -20,9 +23,13 @@ export default function Posts({ searchBy }: PostProps) {
   useEffect(() => {
     const get = async () => {
       let all = await getData();
-      if (all) {
-        let sorted = SortPostByDate(all);
+      if (all && searchBy !== "Kaikki") {
+        let filtered = filterBySchool(searchBy, all);
+        setPost(filtered);
+        console.log(filtered + "BY " + searchBy);
+      } else if (all) {
         // jos löytyy nii aseta sitte vasta muute tulee UNDEFINED ...
+        let sorted = SortPostByDate(all);
         setPost(sorted);
       } else {
         setPost([]);
@@ -52,6 +59,12 @@ export default function Posts({ searchBy }: PostProps) {
                 <div className="flex justify-end">
                   <button className="h-5 border-none hover:underline text-orange-500 text-md">
                     Reply
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.postId)}
+                    className="h-5 border-none hover:underline text-red-500 text-md"
+                  >
+                    Delete
                   </button>
                 </div>
               </div>

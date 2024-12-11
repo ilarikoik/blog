@@ -1,12 +1,13 @@
 import { useRef, useState } from "react";
 import Posts from "./Posts";
-
+import { schools } from "../data/schools";
 interface FilterProps {
   getSchool: (item: string) => void;
 }
 
 export default function Filter({ getSchool }: FilterProps) {
   // hae kaiki koulut suoraa databasesta DESC
+
   return (
     <>
       <div className="h-12 bg-white w-full flex justify-around items-center lg:justify-evenly mb-7">
@@ -19,11 +20,16 @@ export default function Filter({ getSchool }: FilterProps) {
             className="border-none rounded-md p-1"
           >
             <option></option>
-            <option value="Kaikki">Kaikki</option>
-            <option value="HaagaHelia">HaagaHelia</option>
-            <option value="Metropolia">Metropolia</option>
-            <option value="Turun AMK">Turun AMK</option>
-            <option value="Laurea">Laurea</option>
+            {schools.length > 0
+              ? schools.map((item, index) => {
+                  return (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  );
+                })
+              : null}{" "}
+            {/* Render options if schools array has data */}
           </select>
         </section>
         <section>

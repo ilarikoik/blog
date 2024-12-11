@@ -1,4 +1,11 @@
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import app from "./firebaseConfig";
 
 const db = getFirestore(app);
@@ -16,12 +23,8 @@ interface newPost {
 export const addPostData = async (data: newPost) => {
   console.log("ADD data käynnistyy...");
   try {
-    console.log("Try lohkon sisällä...");
     const docRef = await addDoc(collection(db, "postCollection"), data);
-    console.log(
-      "Data tallennettu -- " + JSON.stringify(data) + " --- " + docRef.id
-    );
-    console.log("Document added with ID:", docRef.id);
+    console.log();
   } catch (error) {
     console.error("Error adding document:", error);
   }
@@ -29,7 +32,6 @@ export const addPostData = async (data: newPost) => {
 export const getData = async () => {
   console.log("GET data käynnistyy...");
   try {
-    console.log("Try lohkon sisällä...");
     const querySnapshot = await getDocs(collection(db, "postCollection"));
 
     // Convert querySnapshot to an array of newPost objects
@@ -47,5 +49,19 @@ export const getData = async () => {
     return posts; // Return the mapped posts array
   } catch (error) {
     console.error("Error getting documents:", error); // Handle any errors
+  }
+};
+
+export const deletePost = async (postId: string) => {
+  try {
+    // Reference to the document you want to delete
+    const postDocRef = doc(db, "postCollection", postId); // Replace "posts" with your collection name
+
+    // Delete the document
+    await deleteDoc(postDocRef);
+
+    console.log("Document successfully deleted!");
+  } catch (error) {
+    console.error("Error deleting document: ", error);
   }
 };
