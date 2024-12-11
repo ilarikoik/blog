@@ -4,13 +4,15 @@ import ReactDOM from "react-dom";
 import Lottie from "react-lottie";
 import Modal from "react-modal";
 import done from "../lottie/done.json";
+import { addPostData } from "../firebase/db";
+import formatDate from "../hooks/formatDate";
 
 interface Post {
-  postId: number;
+  postId: string;
   title: string;
   school: string;
   post: string;
-  time: Date;
+  time: string;
 }
 
 //propseja lähetessä tää ja paramterinä pitää olla jotta errori hävii
@@ -22,12 +24,12 @@ export default function AddPost({ user }: User) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [lottie, setLottie] = useState(false);
   let counter = useRef<number>(20);
-  const [newPost, setNewPost] = useState({
-    postId: 0,
+  const [newPost, setNewPost] = useState<Post>({
+    postId: "",
     title: "",
     school: "",
     post: "",
-    time: new Date(),
+    time: "",
   });
   const customStyles = {
     content: {
@@ -41,6 +43,15 @@ export default function AddPost({ user }: User) {
   };
 
   function openModal() {
+    // asetetaa aika tässä jo että se kerkii päivittyy enneku submit
+    const now = formatDate(new Date());
+    setNewPost({
+      postId: "",
+      title: "",
+      school: "",
+      post: "",
+      time: now,
+    });
     setIsOpen(true);
   }
 
@@ -48,18 +59,11 @@ export default function AddPost({ user }: User) {
     setIsOpen(false);
   }
 
-  // tallanne DB tai jtn
   const handleSubmit = () => {
     console.log("New Post Data:", newPost);
     closeModal();
-    setNewPost({
-      postId: (counter.current += 1),
-      title: "",
-      school: "",
-      post: "",
-      time: new Date(),
-    });
     setLottie(true);
+    addPostData(newPost);
   };
 
   useEffect(() => {
@@ -75,29 +79,24 @@ export default function AddPost({ user }: User) {
   };
 
   const options = {
-    animationData: done,
     loop: false,
+    animationData: done,
     autoplay: true,
   };
   return (
     <>
       {lottie ? (
-        <div className="flex items-center ">
+        <div className="flex items-center justify-center ">
           <Lottie options={options} height={60}></Lottie>
         </div>
       ) : (
-        <button className="bg-bor w-2/6 border-2 text-green border-green hover:bg-green hover:text-white rounded-lg mr-2 h-full lg:w-60 ">
+        <button className="text-yellow-400 font-semibold hover:shadow-sm hover:shadow-yellow-400 border-2 border-postgray h-8 hover:border-yellow-400 p-3 rounded-md flex items-center">
           {user ? (
-            <strong className=" text-lg" onClick={openModal}>
+            <p className="" onClick={openModal}>
               Post
-            </strong>
+            </p>
           ) : (
-            <strong
-              className=" text-lg"
-              onClick={() => alert("KIRJAUDU SUISÖÖ")}
-            >
-              SingUp
-            </strong>
+            <strong onClick={() => alert("KIRJAUDU SUISÖÖ")}>SingUp</strong>
           )}
         </button>
       )}

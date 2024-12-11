@@ -22,11 +22,11 @@ export default function Header() {
         <div className="h-16 w-4/5 bg-bor p-3 flex justify-end">
           <AddPost user={user}></AddPost>
           {!user ? (
-            <p className="font-semibold text-blue border-blue border-2 h-full hover:bg-blue hover:text-white hover:border-2 p-3 rounded-md flex items-center">
+            <p className="text-green font-semibold hover:shadow-sm hover:shadow-green border-2 border-postgray h-8 hover:border-green p-3 rounded-md flex items-center ml-2">
               LogIn
             </p>
           ) : (
-            <p className="text-red-500 font-semibold border-red-500 border-2 h-full hover:text-white hover:bg-red-500 p-3 rounded-md flex items-center">
+            <p className="text-red-500 font-semibold hover:shadow-md hover:shadow-red-700 border-2 border-postgray h-8 hover:border-red-300 p-3 rounded-md flex items-center ml-2">
               LogOut
             </p>
           )}

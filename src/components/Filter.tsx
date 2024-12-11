@@ -4,7 +4,9 @@ import Posts from "./Posts";
 interface FilterProps {
   getSchool: (item: string) => void;
 }
+
 export default function Filter({ getSchool }: FilterProps) {
+  // hae kaiki koulut suoraa databasesta DESC
   return (
     <>
       <div className="h-12 bg-white w-full flex justify-around items-center lg:justify-evenly mb-7">
