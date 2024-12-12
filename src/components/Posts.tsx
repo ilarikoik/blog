@@ -5,6 +5,7 @@ import SortPostByDate from "../hooks/sortPostByDate.tsx";
 import { handleDelete } from "../hooks/handleDelete.tsx";
 import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { DoubleRightOutlined } from "@ant-design/icons";
 
 interface PostProps {
   searchBy: string;
@@ -65,19 +66,21 @@ export default function Posts({ searchBy }: PostProps) {
                 <p className="text-black"> {item.post}</p>
                 <div className="flex justify-end">
                   <button
-                    className="h-5 border-none hover:underline text-orange-500 text-md"
-                    onClick={() => handleReply(item.postId)}
-                  >
-                    Reply
-                  </button>
-                  <button
                     onClick={() => {
                       handleDelete(item.postId);
                       setRender((prev) => prev + 1);
                     }}
-                    className="h-5 border-none hover:underline text-red-500 text-md"
+                    className="h-5 border-none hover:underline text-red-500 text-md mr-10"
                   >
                     Delete
+                  </button>
+                  <button
+                    className="h-5 border-none hover:underline text-orange-500 text-md "
+                    onClick={() => handleReply(item.postId)}
+                  >
+                    <DoubleRightOutlined
+                      style={{ fontSize: "24px", color: "#f97316" }}
+                    />
                   </button>
                 </div>
               </div>
