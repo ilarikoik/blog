@@ -24,8 +24,6 @@ interface User {
 export default function AddPost({ user }: User) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [lottie, setLottie] = useState(false);
-  const [school, setSchool] = useState("");
-  let counter = useRef<number>(20);
   const [newPost, setNewPost] = useState<Post>({
     postId: "",
     title: "",
@@ -97,10 +95,10 @@ export default function AddPost({ user }: User) {
           <Lottie options={options} height={60}></Lottie>
         </div>
       ) : (
-        <button className="text-yellow-400 font-semibold hover:shadow-sm hover:shadow-yellow-400 border-2 border-postgray h-8 hover:border-yellow-400 p-3 rounded-md flex items-center">
+        <button className=" font-semibold hover:shadow-sm hover:shadow-yellow- rounded-md flex items-center underline">
           {user ? (
             <p className="" onClick={openModal}>
-              Post
+              Make a Post
             </p>
           ) : (
             <strong onClick={() => alert("KIRJAUDU SUISÖÖ")}>SingUp</strong>

@@ -7,19 +7,13 @@ import {
   doc,
   orderBy,
   query,
+  getDoc,
 } from "firebase/firestore";
 import app from "./firebaseConfig";
+// muista määrittää aina mistä objektista on kyse
+import { newPost } from "../interfaces/postInterface";
 
 const db = getFirestore(app);
-
-// kerro aluks mitä tallennetaan
-interface newPost {
-  postId: string;
-  title: string;
-  school: string;
-  post: string;
-  time: string;
-}
 
 // tekee collectionin jos ei oo jo
 export const addPostData = async (data: newPost) => {
@@ -48,17 +42,29 @@ export const getData = async () => {
         time: data.time,
       };
     });
-
-    return posts; // Return the mapped posts array
+    return posts;
   } catch (error) {
-    console.error("Error getting documents:", error); // Handle any errors
+    console.error("Error getting documents:", error);
+  }
+};
+export const getPostByPostId = async (postId: string) => {
+  console.log("Haetaan post by id ...");
+  try {
+    const postDocRef = doc(db, "postCollection", postId);
+    let post = await getDoc(postDocRef);
+    if (post) {
+      // post.data() tulostaa pelkästää sen mun datan sieltä kaiken joukosta mutta se pitää vielä asettaa objektiksti
+      return post.data() as newPost;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting documents:", error);
   }
 };
 
 export const deletePost = async (postId: string) => {
   try {
-    // Reference to the document you want to delete
-    const postDocRef = doc(db, "postCollection", postId); // Replace "posts" with your collection name
+    const postDocRef = doc(db, "postCollection", postId);
 
     // Delete the document
     await deleteDoc(postDocRef);

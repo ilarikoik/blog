@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import examplePost from "../data/examplePost.json";
+import { useEffect, useRef, useState } from "react";
 import filterBySchool from "../hooks/filterPosts.tsx";
 import { getData } from "../firebase/db.tsx";
 import SortPostByDate from "../hooks/sortPostByDate.tsx";
-import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import { handleDelete } from "../hooks/handleDelete.tsx";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 interface PostProps {
   searchBy: string;
 }
@@ -15,10 +16,11 @@ interface newPost {
   post: string;
   time: string;
 }
-const db = getFirestore();
 
 export default function Posts({ searchBy }: PostProps) {
   const [post, setPost] = useState<newPost[]>(); // tulee olemaan taulukko täynnä objekteja
+  const [render, setRender] = useState(0);
+  const navigate = useNavigate(); // tarvii navigoidessa api sisällä
 
   useEffect(() => {
     const get = async () => {
@@ -36,8 +38,12 @@ export default function Posts({ searchBy }: PostProps) {
       }
     };
     get();
-  }, [searchBy]);
+  }, [searchBy, render]);
 
+  const handleReply = (postId: string) => {
+    console.log(postId);
+    navigate("/reply", { state: { postId } });
+  };
   return (
     <div className="flex justify-center items-center w-full">
       <div className="w-full m-1 justify-center items-center lg:w-4/5 xl:3/5">
@@ -46,22 +52,29 @@ export default function Posts({ searchBy }: PostProps) {
             return (
               <div
                 key={item.postId}
-                className="bg-white w-full rounded-lg mb-4 p-3 border-2 border-bor shadow-md"
+                className="bg-white border-2 w-full rounded-lg mb-5 p-3 border-bor shadow-2xl"
               >
                 <p className="text-black flex justify-between">
                   <strong>{item.school}</strong>
                   {"  "}
-                  {item.postId}
-                  <p className="text-black"> {item.time}</p>
+                  {/*item.postId*/}
+                  {"......"}
+                  {item.time}
                 </p>
                 <h3 className="text-black">{item.title}</h3>
                 <p className="text-black"> {item.post}</p>
                 <div className="flex justify-end">
-                  <button className="h-5 border-none hover:underline text-orange-500 text-md">
+                  <button
+                    className="h-5 border-none hover:underline text-orange-500 text-md"
+                    onClick={() => handleReply(item.postId)}
+                  >
                     Reply
                   </button>
                   <button
-                    onClick={() => handleDelete(item.postId)}
+                    onClick={() => {
+                      handleDelete(item.postId);
+                      setRender((prev) => prev + 1);
+                    }}
                     className="h-5 border-none hover:underline text-red-500 text-md"
                   >
                     Delete
