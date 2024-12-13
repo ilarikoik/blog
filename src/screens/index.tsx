@@ -55,7 +55,7 @@ const Index = () => {
     <div className="bg-white w-full min-h-screen ">
       {showModal && <CustomAlert setShowModal={setShowModal} />}
 
-      <Header></Header>
+      <Header reload={reload}></Header>
       <Filter getSchool={getSchool}></Filter>
       <Posts searchBy={searchBy}></Posts>
     </div>

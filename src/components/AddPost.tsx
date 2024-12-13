@@ -20,8 +20,13 @@ interface Post {
 interface User {
   user: boolean;
 }
+interface Toggle {
+  toggle: boolean;
+  toggleState: () => void;
+}
+interface AddPostProps extends User, Toggle {}
 
-export default function AddPost({ user }: User) {
+export default function AddPost({ user, toggle, toggleState }: AddPostProps) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [lottie, setLottie] = useState(false);
   const [newPost, setNewPost] = useState<Post>({
@@ -64,6 +69,7 @@ export default function AddPost({ user }: User) {
     closeModal();
     setLottie(true);
     addPostData(newPost);
+    toggleState(); // vaihellaa posts komponentin togglea
   };
 
   useEffect(() => {

@@ -6,6 +6,8 @@ import { handleDelete } from "../hooks/handleDelete.tsx";
 import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { DoubleRightOutlined } from "@ant-design/icons";
+import AddPost from "./AddPost.tsx";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface PostProps {
   searchBy: string;
@@ -17,11 +19,12 @@ interface newPost {
   post: string;
   time: string;
 }
-
+const auth = getAuth();
 export default function Posts({ searchBy }: PostProps) {
   const [post, setPost] = useState<newPost[]>(); // tulee olemaan taulukko täynnä objekteja
   const [render, setRender] = useState(0);
   const navigate = useNavigate(); // tarvii navigoidessa api sisällä
+  const [isToggled, setIsToggled] = useState(false);
 
   useEffect(() => {
     const get = async () => {
@@ -39,57 +42,78 @@ export default function Posts({ searchBy }: PostProps) {
       }
     };
     get();
-  }, [searchBy, render]);
+  }, [searchBy, render, isToggled]);
+
+  const [user, setUser] = useState(false); // Käyttäjän nimi
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    });
+
+    // Palautetaan kuuntelija, jotta voidaan poistaa kuuntelu, kun komponentti poistetaan
+    return () => unsubscribe();
+  }, []);
+
+  // annetaan propsina addpost komponentille jotta kun lisätää nii sivu post array päivityy
+  const toggleState = () => {
+    setIsToggled((prevState) => !prevState);
+  };
 
   const handleReply = (postId: string) => {
     console.log(postId);
     navigate("/reply", { state: { postId } });
   };
   return (
-    <div className="flex justify-center items-center w-full">
-      <div className="w-full m-1 justify-center items-center lg:w-4/5 xl:3/5">
-        {Array.isArray(post) ? (
-          post.map((item) => {
-            return (
-              <div
-                key={item.postId}
-                className="bg-white border-2 w-full rounded-lg mb-5 p-3 border-bor shadow-2xl"
-              >
-                <p className="text-black flex justify-between">
-                  <strong>{item.school}</strong>
-                  {"  "}
-                  {/*item.postId*/}
-                  {"......"}
-                  {item.time}
-                </p>
-                <h3 className="text-black">{item.title}</h3>
-                <p className="text-black"> {item.post}</p>
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => {
-                      handleDelete(item.postId);
-                      setRender((prev) => prev + 1);
-                    }}
-                    className="h-5 border-none hover:underline text-red-500 text-md mr-10"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="h-5 border-none hover:underline text-orange-500 text-md "
-                    onClick={() => handleReply(item.postId)}
-                  >
-                    <DoubleRightOutlined
-                      style={{ fontSize: "24px", color: "#f97316" }}
-                    />
-                  </button>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <p>No posts available</p>
-        )}
+    <>
+      <div className="w-full justify-center flex text-lg">
+        <AddPost toggleState={toggleState} user={user} toggle={false}></AddPost>
       </div>
-    </div>
+      <div className="flex justify-center items-center w-full">
+        <div className="w-full m-1 justify-center items-center lg:w-4/5 xl:3/5">
+          {Array.isArray(post) ? (
+            post.map((item) => {
+              return (
+                <div
+                  key={item.postId}
+                  className="bg-white border-2 w-full rounded-lg mb-5 p-3 border-bor shadow-2xl"
+                >
+                  <p className="text-black flex justify-between">
+                    <strong>{item.school}</strong>
+                    {item.time}
+                  </p>
+                  <h3 className="text-black">{item.title}</h3>
+                  <p className="text-black"> {item.post}</p>
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => {
+                        handleDelete(item.postId);
+                        setRender((prev) => prev + 1);
+                      }}
+                      className="h-5 border-none hover:underline text-red-500 text-md mr-10"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="h-5 border-none hover:underline text-orange-500 text-md "
+                      onClick={() => handleReply(item.postId)}
+                    >
+                      <DoubleRightOutlined
+                        style={{ fontSize: "24px", color: "#f97316" }}
+                      />
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <p>No posts available</p>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
