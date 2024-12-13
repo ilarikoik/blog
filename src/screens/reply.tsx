@@ -46,7 +46,7 @@ const Reply = () => {
                     </p>
                     <h1 className="font-semibold text-lg mb-2">{post.title}</h1>
                   </div>
-                  <button className="p-2 text-white rounded-lg w-fit justify-end bg-orange-500 font-bold">
+                  <button className="p-2 text-white rounded-lg w-fit justify-end bg-orange-500 font-bold hover:shadow-lg hover:shadow-orange-700">
                     Reply
                   </button>
                 </div>

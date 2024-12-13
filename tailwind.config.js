@@ -10,6 +10,7 @@ export default {
         blue: "#1d9bf0",
         bor: "#f5f6f7",
         postgray: "#dcdfe0",
+        input: "#e8e8e8",
       },
     },
   },

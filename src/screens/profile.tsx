@@ -4,14 +4,32 @@ import Lottie from "react-lottie";
 import user from "../lottie/user.json";
 import { Link } from "react-router-dom";
 import examplePost from "../data/examplePost.json";
+import { DoubleRightOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { getUser } from "../auth/userState";
+import { getUserByUid } from "../firebase/db";
 
 const Profile = () => {
+  const [name, setName] = useState("");
   const options = {
     animationData: user,
     loop: false,
     autoplay: true,
   };
 
+  //haetaa username
+  useEffect(() => {
+    const fetchUser = async () => {
+      const fetchedUser = await getUser();
+      if (fetchedUser?.uid) {
+        let ukko = await getUserByUid(fetchedUser?.uid);
+        if (ukko) {
+          setName(ukko.username);
+        }
+      }
+    };
+    fetchUser();
+  }, []);
   // kun klikataan "show thread" lähetetää postin id reply sivulle ja siellä näytetää ne kaikki sitte
   return (
     <>
@@ -21,7 +39,7 @@ const Profile = () => {
           <Lottie options={options} height={130} width={90}></Lottie>
           <div className="flex flex-col justify-center items-center w-full h-24">
             <div className="w-36 ">
-              <p>Käyttäjänimi: *****</p>
+              <p>{name}</p>
               <p>postaukset: 12</p>
             </div>
           </div>
@@ -47,8 +65,10 @@ const Profile = () => {
                   </div>
                   <div className=" w-32 h-30 flex items-end">
                     <div className="flex justify-end w-full ">
-                      <button className="p-2 text-white rounded-lg w-fit justify-end bg-orange-500 font-bold">
-                        Show Thread
+                      <button className="p-2 text-white rounded-lg w-fit justify-end  font-bold">
+                        <DoubleRightOutlined
+                          style={{ fontSize: "24px", color: "#f97316" }}
+                        />
                       </button>
                     </div>
                   </div>

@@ -1,19 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddPost from "./AddPost";
 import Lottie from "react-lottie";
 import blog from "../lottie/blog.json";
 import { Link } from "react-router-dom";
-import Slider from "./SliderMenu";
 import { loggedInSites } from "../data/loggedInSites";
+import GoogleAuth from "../auth/googleAuth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import app from "../firebase/firebaseConfig";
+
+const auth = getAuth(app);
 
 export default function Header() {
-  const user = true;
-
   const options = {
     animationData: blog,
     loop: true,
     autoplay: true,
   };
+
+  const [user, setUser] = useState(false); // Käyttäjän nimi
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    });
+
+    // Palautetaan kuuntelija, jotta voidaan poistaa kuuntelu, kun komponentti poistetaan
+    return () => unsubscribe();
+  }, []); // Tyhjä riippuvuuslista, joten tämä suoritetaan vain kerran komponentin latautuessa
 
   return (
     <>
@@ -24,9 +40,11 @@ export default function Header() {
             <strong>BLGO</strong>
           </h1>
         </div>
+        {/*
         <div className=" w-full flex justify-end items-center">
           <Slider></Slider>
         </div>
+          */}
         <hr className="h-1 bg-gray border-none" />
       </div>
       {/*ylempi on md asti ja alempi sen jälkeen */}
@@ -35,8 +53,8 @@ export default function Header() {
           <Lottie options={options} height={80} />
         </div>
       </div>
-      <div className="h-fit flex justify-end bg-bor p-2">
-        <div className="hidden md:flex w-3/6  justify-between">
+      <div className="flex justify-around w-full h-fit md:justify-end bg-bor p-2">
+        <div className="flex w-4/6  justify-between">
           {user ? (
             Array.isArray(loggedInSites) &&
             loggedInSites.map((item, index) => {
@@ -44,20 +62,22 @@ export default function Header() {
                 <Link
                   key={index}
                   to={item.screen}
-                  className="text-orange-500 text-xl hover:underline "
+                  className="text-sm text-orange-500 md:text-xl hover:underline "
                 >
                   {item.name}
                 </Link>
               );
             })
           ) : (
-            <p className="text-red-500 font-semibold hover:shadow-md cursor-pointer hover:shadow-red-700 border-2 border-postgray h-8 hover:border-red-300 p-3 rounded-md flex items-center ml-2">
-              LogIn
-            </p>
+            <div className="flex justify-end  w-full"></div>
           )}
         </div>
       </div>
       <hr className="h-1 bg-gray border-none" />
+
+      <div className="flex justify-end w-full p-3">
+        {<GoogleAuth></GoogleAuth>}
+      </div>
     </>
   );
 }

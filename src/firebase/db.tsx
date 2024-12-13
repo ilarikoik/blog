@@ -8,10 +8,12 @@ import {
   orderBy,
   query,
   getDoc,
+  where,
 } from "firebase/firestore";
 import app from "./firebaseConfig";
 // muista määrittää aina mistä objektista on kyse
 import { newPost } from "../interfaces/postInterface";
+import { nameAndUid } from "../interfaces/nameAndUid";
 
 const db = getFirestore(app);
 
@@ -48,7 +50,6 @@ export const getData = async () => {
   }
 };
 export const getPostByPostId = async (postId: string) => {
-  console.log("Haetaan post by id ...");
   try {
     const postDocRef = doc(db, "postCollection", postId);
     let post = await getDoc(postDocRef);
@@ -72,5 +73,82 @@ export const deletePost = async (postId: string) => {
     console.log("Document successfully deleted!");
   } catch (error) {
     console.error("Error deleting document: ", error);
+  }
+};
+
+// username AND uid
+export const addUserNameAndUid = async (nameAndUid: nameAndUid) => {
+  if (!nameAndUid.username || !nameAndUid.uid) {
+    return;
+  }
+  try {
+    const docRef = await addDoc(collection(db, "usernameAndUid"), nameAndUid);
+    console.log("added username and UID with ID " + docRef.id); // Tämä antaa ID:n
+  } catch (error) {
+    console.error("Error adding document:", error);
+  }
+};
+
+// Hakee kaikki käyttäjät
+export const getAllUserData = async () => {
+  console.log("Haetaan kaikki käyttäjätiedot...");
+  try {
+    const querySnapshot = await getDocs(collection(db, "usernameAndUid"));
+    if (querySnapshot.empty) {
+      console.log("Kokoelma on tyhjä.");
+      return [];
+    }
+    const allData = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    console.log("Haettu tiedot:", allData);
+    return allData; // Palautetaan kaikki tiedot
+  } catch (error) {
+    console.error("Virhe haettaessa kaikkia tietoja:", error);
+    return [];
+  }
+};
+
+// haetaa usernamen perusteella käyttäjätiedot
+export const getUserByUsername = async (username: string) => {
+  console.log("Haetaan käyttäjä nimellä:", username);
+
+  try {
+    const q = query(
+      collection(db, "usernameAndUid"),
+      where("username", "==", username)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log("Käyttäjää ei löytynyt.");
+      return null;
+    }
+
+    const userData = querySnapshot.docs[0].data();
+    console.log("Haettu käyttäjä:", userData);
+    return userData;
+  } catch (error) {
+    console.error("Virhe haettaessa käyttäjää:", error);
+    return null;
+  }
+};
+
+// haetaa uid perusteella käyttäjätiedot
+export const getUserByUid = async (uid: string) => {
+  console.log("Haetaan käyttäjä nimellä:", uid);
+  try {
+    const q = query(collection(db, "usernameAndUid"), where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      console.log("Käyttäjää ei löytynyt.");
+      return null;
+    }
+    const userData = querySnapshot.docs[0].data();
+    console.log("Tämähetkinen käyttäjä:", userData);
+    return userData;
+  } catch (error) {
+    console.error("Virhe haettaessa käyttäjää:", error);
+    return null; // Virhetilanteessa palautetaan null
   }
 };

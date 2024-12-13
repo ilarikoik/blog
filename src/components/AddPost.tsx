@@ -119,17 +119,27 @@ export default function AddPost({ user }: User) {
             <label htmlFor="postContent">Title:</label>
             <input
               name="title"
-              className="bg-postgray rounded-md m-1"
+              className="border-none p-1 rounded-md bg-bor shadow-black shadow-sm transition-all"
               type="text"
               value={newPost.title}
               onChange={handleInputChange}
             />
             <label htmlFor="postContent">School:</label>
-            <select id="postContent" onChange={handleSchoolChange}>
+
+            <select
+              id="postContent"
+              onChange={handleSchoolChange}
+              className="border-none p-1 rounded-md bg-bor shadow-black shadow-sm
+            transition-all"
+            >
               {schools.length > 0 ? (
                 schools.map((item, index) => {
                   return (
-                    <option key={index} value={item}>
+                    <option
+                      key={index}
+                      value={item}
+                      className="border-none p-1 rounded-md bg-bor shadow-black shadow-sm transition-all"
+                    >
                       {item}
                     </option>
                   );
@@ -149,7 +159,7 @@ export default function AddPost({ user }: User) {
             />*/}
             <label htmlFor="postContent">Post Content:</label>
             <textarea
-              className="bg-postgray rounded-md m-1"
+              className="border-none p-1 rounded-md bg-bor shadow-black shadow-sm transition-all"
               name="post"
               id="postContent"
               value={newPost.post}
