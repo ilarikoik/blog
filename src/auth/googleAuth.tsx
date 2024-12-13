@@ -35,6 +35,7 @@ const GoogleAuth = () => {
       const user = result.user;
       console.log("User info:", user);
       setUser(user); // Asetetaan käyttäjä sisäänkirjautuneeksi
+      location.reload();
     } catch (error: any) {
       console.error("Error during Google login:", error.message);
     }

@@ -54,7 +54,7 @@ export default function Header() {
         </div>
       </div>
       <div className="flex justify-around w-full h-fit md:justify-end bg-bor p-2">
-        <div className="flex w-4/6  justify-between">
+        <div className="flex w-2/6  justify-between">
           {user ? (
             Array.isArray(loggedInSites) &&
             loggedInSites.map((item, index) => {
@@ -74,8 +74,8 @@ export default function Header() {
         </div>
       </div>
       <hr className="h-1 bg-gray border-none" />
-
-      <div className="flex justify-end w-full p-3">
+      <div className="flex justify-end  w-full p-3">
+        <AddPost user={user}></AddPost>
         {<GoogleAuth></GoogleAuth>}
       </div>
     </>

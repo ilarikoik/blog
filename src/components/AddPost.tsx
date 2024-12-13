@@ -95,27 +95,24 @@ export default function AddPost({ user }: User) {
           <Lottie options={options} height={60}></Lottie>
         </div>
       ) : (
-        <button className=" font-semibold hover:shadow-sm hover:shadow-yellow- rounded-md flex items-center underline">
-          {user ? (
+        <button className=" font-semibold text-blue hover:shadow-sm hover:shadow-yellow rounded-md flex items-center mr-5 hover:underline">
+          {user && (
             <p className="" onClick={openModal}>
               Make a Post
             </p>
-          ) : (
-            <strong onClick={() => alert("KIRJAUDU SUISÖÖ")}>SingUp</strong>
           )}
         </button>
       )}
-      <div>
+      <div className="bg-red-500">
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           style={customStyles}
-          contentLabel="Example Modal"
         >
           <h2>Write a post</h2>
           <br />
 
-          <form className="flex flex-col">
+          <form className="flex flex-col w-60 md:w-full">
             <label htmlFor="postContent">Title:</label>
             <input
               name="title"

@@ -3,7 +3,11 @@ import Modal from "react-modal";
 import { addUserNameAndUid } from "../firebase/db";
 import { getUser } from "../auth/userState";
 
-export default function CustomAlert() {
+interface CustomAlertProps {
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function CustomAlert({ setShowModal }: CustomAlertProps) {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [uid, setUid] = useState("");
@@ -79,12 +83,6 @@ export default function CustomAlert() {
                 className="mr-2 bg-blue-500 text-green rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Submit
-              </button>
-              <button
-                onClick={closeModal}
-                className="bg-gray-300 text-red-500 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Cancel
               </button>
             </div>
           </div>

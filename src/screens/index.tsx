@@ -12,7 +12,7 @@ const Index = () => {
   const [searchBy, setSearchBy] = useState("Kaikki");
   const [user, setUser] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [reload, setReload] = useState(0);
+  const [reload, setReload] = useState(false);
 
   const getSchool = (item: string) => {
     setSearchBy(item);
@@ -30,16 +30,15 @@ const Index = () => {
       }
     };
     use();
-  }, [searchBy]);
+  }, [searchBy, reload]);
 
   // jos ei oo tietokannassa nii modal aukee ja pitää täyttää käyttäjänimi joka sitte näytetää muualla
   useEffect(() => {
     const fetchUser = async () => {
       const fetchedUser = await getUser();
       if (fetchedUser && fetchedUser.uid) {
-        let keijo = await getUserByUid(fetchedUser.uid);
+        const keijo = await getUserByUid(fetchedUser.uid);
         if (!keijo) {
-          //setShowModal(false)
           setShowModal(true);
         }
       } else {
@@ -49,23 +48,16 @@ const Index = () => {
     fetchUser();
   }, []);
 
-  setTimeout(() => {
-    while (reload < 1) {
-      location.reload();
-      setReload((prev) => prev + 1);
-    }
-  }, 7000);
   // POSTAUKSELLE VASTAUS SIVUSTO eli lisää POST objektille vastaukset: string[]
   // klikatessa postausta lähetä postauksen id toiselle siuvlle ja sit hae se databasesta näytä postaus ja mapilla vastaukset
   // jos vastauksella on alle 0 upvote border red ja jos yli 0 nii green, jos 0 nii gray
   return (
     <div className="bg-white w-full min-h-screen ">
+      {showModal && <CustomAlert setShowModal={setShowModal} />}
+
       <Header></Header>
       <Filter getSchool={getSchool}></Filter>
       <Posts searchBy={searchBy}></Posts>
-      <div>
-        {showModal && <CustomAlert />} {/* Conditionally render the modal */}
-      </div>
     </div>
   );
 };
