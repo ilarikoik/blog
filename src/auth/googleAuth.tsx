@@ -7,6 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 import app from "../firebase/firebaseConfig"; // Firebase-konfiguraatio
+import { Link } from "react-router-dom";
 
 const auth = getAuth(app);
 
@@ -56,20 +57,22 @@ const GoogleAuth = () => {
     <div>
       {user ? (
         <>
-          <button
+          <Link
+            to="/login"
             className="text-red-500 font-semibold hover:underline "
             onClick={handleLogOut}
           >
             Sign Out
-          </button>
+          </Link>
         </>
       ) : (
-        <button
+        <Link
+          to="/"
           className="text-green font-semibold hover:underline "
           onClick={handleGoogleLogin}
         >
           Sign in with Google
-        </button>
+        </Link>
       )}
     </div>
   );

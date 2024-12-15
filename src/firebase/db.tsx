@@ -9,10 +9,13 @@ import {
   query,
   getDoc,
   where,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import app from "./firebaseConfig";
 // muista määrittää aina mistä objektista on kyse
 import { newPost } from "../interfaces/postInterface";
+import { Answer } from "../interfaces/postInterface";
 import { nameAndUid } from "../interfaces/nameAndUid";
 
 const db = getFirestore(app);
@@ -27,6 +30,27 @@ export const addPostData = async (data: newPost) => {
     console.error("Error adding document:", error);
   }
 };
+
+// add reply to post
+// answer objekti ja postId jotta löydetään oikea postaus ja se pitäs lisää sinne sen answers kohtaan ?
+export const addReply = async (data: Answer, postid: string) => {
+  console.log("ADD reply käynnistyy...");
+  try {
+    const postDocRef = doc(db, "postCollection", postid); // haetaa doc idn perusteella
+    let post = await getDoc(postDocRef);
+    console.log(JSON.stringify(post.data()) + "adding reply ... --> "); // löyty oikea
+
+    if (post.exists()) {
+      await updateDoc(postDocRef, {
+        answers: arrayUnion(data),
+      });
+      console.log("ONNISTUI ?");
+    }
+  } catch (error) {
+    console.error("Error adding REPLY:", error);
+  }
+};
+
 export const getData = async () => {
   console.log("GET data käynnistyy...");
   try {
@@ -42,6 +66,7 @@ export const getData = async () => {
         school: data.school,
         post: data.post,
         time: data.time,
+        answers: data.answers,
       };
     });
     return posts;

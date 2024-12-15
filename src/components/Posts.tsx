@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import filterBySchool from "../hooks/filterPosts.tsx";
-import { getData } from "../firebase/db.tsx";
+import { getData, getUserByUid } from "../firebase/db.tsx";
 import SortPostByDate from "../hooks/sortPostByDate.tsx";
 import { handleDelete } from "../hooks/handleDelete.tsx";
 import { Link, Navigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import AddPost from "./AddPost.tsx";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUser } from "../auth/userState.tsx";
 
 interface PostProps {
   searchBy: string;
@@ -25,6 +26,7 @@ export default function Posts({ searchBy }: PostProps) {
   const [render, setRender] = useState(0);
   const navigate = useNavigate(); // tarvii navigoidessa api sisällä
   const [isToggled, setIsToggled] = useState(false);
+  const [username, setUsername] = useState(false);
 
   useEffect(() => {
     const get = async () => {
@@ -44,18 +46,20 @@ export default function Posts({ searchBy }: PostProps) {
     get();
   }, [searchBy, render, isToggled]);
 
-  const [user, setUser] = useState(false); // Käyttäjän nimi
+  const [loggedInUser, setLoggedInUser] = useState(false);
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(true);
+    const logged = async () => {
+      const get = await getUser(); // Assuming this fetches the user data
+      let username = get ? await getUserByUid(get?.uid) : "";
+      if (username && typeof username !== "string" && "username" in username) {
+        setUsername(username.username);
       } else {
-        setUser(false);
+        console.log("No username found or username is a string");
       }
-    });
 
-    // Palautetaan kuuntelija, jotta voidaan poistaa kuuntelu, kun komponentti poistetaan
-    return () => unsubscribe();
+      setLoggedInUser(get ? true : false);
+    };
+    logged();
   }, []);
 
   // annetaan propsina addpost komponentille jotta kun lisätää nii sivu post array päivityy
@@ -65,12 +69,16 @@ export default function Posts({ searchBy }: PostProps) {
 
   const handleReply = (postId: string) => {
     console.log(postId);
-    navigate("/reply", { state: { postId } });
+    navigate("/reply", { state: { postId, loggedInUser, username } });
   };
   return (
     <>
       <div className="w-full justify-center flex text-lg">
-        <AddPost toggleState={toggleState} user={user} toggle={false}></AddPost>
+        <AddPost
+          toggleState={toggleState}
+          loggedInUser={loggedInUser}
+          toggle={false}
+        ></AddPost>
       </div>
       <div className="flex justify-center items-center w-full">
         <div className="w-full m-1 justify-center items-center lg:w-4/5 xl:3/5">
@@ -86,7 +94,7 @@ export default function Posts({ searchBy }: PostProps) {
                     {item.time}
                   </p>
                   <h3 className="text-black">{item.title}</h3>
-                  <p className="text-black"> {item.post}</p>
+                  <p className="text-black text-wrap"> {item.post}</p>
                   <div className="flex justify-end">
                     <button
                       onClick={() => {

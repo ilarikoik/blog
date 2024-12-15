@@ -10,12 +10,12 @@ export const getUser = () => {
       auth,
       (user) => {
         if (user) {
-          resolve(user);
+          resolve(user); // palauttaa user jos on
         } else {
           resolve(null);
         }
       },
-      reject
+      reject // virheiden käsittely
     );
     return unsubscribe;
   });

@@ -39,7 +39,9 @@ const Profile = () => {
           <Lottie options={options} height={130} width={90}></Lottie>
           <div className="flex flex-col justify-center items-center w-full h-24">
             <div className="w-36 ">
-              <p>{name}</p>
+              <p className="underline font-semibold">
+                {name ? name : "stranger"}
+              </p>
               <p>postaukset: 12</p>
             </div>
           </div>

@@ -18,7 +18,7 @@ interface Post {
 
 //propseja lähetessä tää ja paramterinä pitää olla jotta errori hävii
 interface User {
-  user: boolean;
+  loggedInUser: boolean;
 }
 interface Toggle {
   toggle: boolean;
@@ -26,7 +26,11 @@ interface Toggle {
 }
 interface AddPostProps extends User, Toggle {}
 
-export default function AddPost({ user, toggle, toggleState }: AddPostProps) {
+export default function AddPost({
+  loggedInUser,
+  toggle,
+  toggleState,
+}: AddPostProps) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [lottie, setLottie] = useState(false);
   const [newPost, setNewPost] = useState<Post>({
@@ -102,7 +106,7 @@ export default function AddPost({ user, toggle, toggleState }: AddPostProps) {
         </div>
       ) : (
         <button className=" font-semibold text-blue hover:shadow-sm hover:shadow-yellow rounded-md flex items-center mr-5 hover:underline">
-          {user && (
+          {loggedInUser && (
             <p className="" onClick={openModal}>
               Make a Post
             </p>

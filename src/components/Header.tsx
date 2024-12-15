@@ -75,7 +75,7 @@ export default function Header() {
       </div>
       <hr className="h-1 bg-gray border-none" />
       <div className="flex justify-end  w-full p-3">
-        {<GoogleAuth></GoogleAuth>}
+        <GoogleAuth></GoogleAuth>
       </div>
     </>
   );
