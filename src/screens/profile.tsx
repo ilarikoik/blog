@@ -7,10 +7,13 @@ import examplePost from "../data/examplePost.json";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { getUser } from "../auth/userState";
-import { getUserByUid } from "../firebase/db";
+import { getData, getUserByUid } from "../firebase/db";
+import { newPost } from "../interfaces/postInterface";
 
 const Profile = () => {
   const [name, setName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [ownPosts, setOwnPosts] = useState<newPost[]>();
   const options = {
     animationData: user,
     loop: false,
@@ -21,6 +24,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const fetchedUser = await getUser();
+      let getAllpost = await getData();
+      let filteredByUid = getAllpost?.filter(
+        (item) => item.posterUid === fetchedUser?.uid
+      );
+      setOwnPosts(filteredByUid);
       if (fetchedUser?.uid) {
         let ukko = await getUserByUid(fetchedUser?.uid);
         if (ukko) {
@@ -38,11 +46,11 @@ const Profile = () => {
         <div className=" h-4/5 w-4/5 rounded-lg  border-postgray shadow-2xl lg:w-1/3">
           <Lottie options={options} height={130} width={90}></Lottie>
           <div className="flex flex-col justify-center items-center w-full h-24">
-            <div className="w-36 ">
+            <div className="w-fit ">
               <p className="underline font-semibold">
                 {name ? name : "stranger"}
               </p>
-              <p>postaukset: 12</p>
+              <p>Omien postauksien määrä: {ownPosts?.length}</p>
             </div>
           </div>
         </div>
@@ -52,8 +60,8 @@ const Profile = () => {
           OMAT POSTAUKSET
         </h1>
         <div className="flex justify-center flex-col items-end">
-          {examplePost &&
-            examplePost.map((item, id) => {
+          {ownPosts &&
+            ownPosts.map((item, id) => {
               return (
                 <div
                   key={id}

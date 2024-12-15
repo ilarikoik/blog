@@ -68,7 +68,7 @@ const GoogleAuth = () => {
       ) : (
         <Link
           to="/"
-          className="text-green font-semibold hover:underline "
+          className="text-blue font-semibold hover:underline "
           onClick={handleGoogleLogin}
         >
           Sign in with Google

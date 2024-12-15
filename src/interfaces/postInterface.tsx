@@ -1,10 +1,11 @@
 export interface newPost {
   postId: string;
+  posterUid: string;
   title: string;
   school: string;
   post: string;
   time: string;
-  answers: Answer;
+  answers: Answer[];
 }
 
 // tyhjä taulukko vastauksia varten

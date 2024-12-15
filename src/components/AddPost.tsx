@@ -7,18 +7,12 @@ import done from "../lottie/done.json";
 import { addPostData } from "../firebase/db";
 import formatDate from "../hooks/formatDate";
 import { schools } from "../data/schools";
-
-interface Post {
-  postId: string;
-  title: string;
-  school: string;
-  post: string;
-  time: string;
-}
+import { newPost } from "../interfaces/postInterface";
 
 //propseja lähetessä tää ja paramterinä pitää olla jotta errori hävii
 interface User {
   loggedInUser: boolean;
+  uid: string;
 }
 interface Toggle {
   toggle: boolean;
@@ -28,17 +22,20 @@ interface AddPostProps extends User, Toggle {}
 
 export default function AddPost({
   loggedInUser,
+  uid,
   toggle,
   toggleState,
 }: AddPostProps) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [lottie, setLottie] = useState(false);
-  const [newPost, setNewPost] = useState<Post>({
+  const [newPost, setNewPost] = useState<newPost>({
     postId: "",
+    posterUid: "",
     title: "",
     school: "",
     post: "",
     time: "",
+    answers: [],
   });
   const customStyles = {
     content: {
@@ -56,10 +53,12 @@ export default function AddPost({
     const now = formatDate(new Date());
     setNewPost({
       postId: "",
+      posterUid: uid, // hae db käyttääjn nimi
       title: "",
       school: "",
       post: "",
       time: now,
+      answers: [],
     });
     setIsOpen(true);
   }
@@ -84,13 +83,20 @@ export default function AddPost({
     }
   }, [lottie]);
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPost({ ...newPost, [e.currentTarget.name]: e.currentTarget.value });
   };
 
   const handleSchoolChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // muokataa objektia , attribuutti, arvo
     setNewPost({ ...newPost, school: e.target.value });
+  };
+
+  const handleInputChangeArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewPost({
+      ...newPost,
+      post: e.target.value, // Update the state with the new value from the textarea
+    });
   };
 
   const options = {
@@ -105,13 +111,18 @@ export default function AddPost({
           <Lottie options={options} height={60}></Lottie>
         </div>
       ) : (
-        <button className=" font-semibold text-blue hover:shadow-sm hover:shadow-yellow rounded-md flex items-center mr-5 hover:underline">
+        <>
           {loggedInUser && (
-            <p className="" onClick={openModal}>
-              Make a Post
-            </p>
+            <div className="bg-white h-fit rounded-xl w-fit p-2 cursor-pointer border-2 border-postgray hover:border-orange-500 hover:shadow-md hover:shadow-orange-500 mb-5">
+              <h1
+                className=" text-orange-500 text-xl flex justify-center items-center"
+                onClick={openModal}
+              >
+                {"-->"} uusi julkaisu
+              </h1>
+            </div>
           )}
-        </button>
+        </>
       )}
       <div className="bg-red-500">
         <Modal
@@ -170,7 +181,7 @@ export default function AddPost({
               name="post"
               id="postContent"
               value={newPost.post}
-              onChange={handleInputChange}
+              onChange={handleInputChangeArea}
               rows={6} // You can adjust this value for more/less space
               cols={50} // You can adjust this value for more/less space
             />

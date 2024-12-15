@@ -1,14 +1,8 @@
-import react, { View, Text } from "react-native";
 import Header from "../components/Header";
-import Lottie from "react-lottie";
-import user from "../lottie/user.json";
-import { Link, redirect } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getPostByPostId } from "../firebase/db";
 import { useEffect, useState } from "react";
 import { newPost } from "../interfaces/postInterface";
-import examplePost from "../data/examplePost.json";
-import { getUser } from "../auth/userState";
 import ReplyModal from "../components/ReplyModal";
 
 const Reply = () => {
@@ -16,7 +10,6 @@ const Reply = () => {
   const { postId, loggedInUser, username } = location.state || {}; // vastaanotetaan posts.tsx komponentilta lähetetty id, jos tyhjä nii palauttaa tyhjän objektin
   const [post, setPost] = useState<newPost>() || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const get = async () => {
@@ -79,17 +72,26 @@ const Reply = () => {
           Array.isArray(post.answers) &&
           post.answers.map((answer, id) => {
             return (
-              <div
-                key={id}
-                className="w-full h-fit md:w-3/5 bg-postgray m-2 p-4 rounded-md"
-              >
-                <h2 className="flex justify-around">
-                  <strong>{answer.title}</strong>
-                  <strong>{answer.username}</strong>
-                  <strong>{answer.time}</strong>
-                </h2>
-                <h3>{answer.post}</h3>
-              </div>
+              <>
+                <div
+                  key={id}
+                  className="w-full h-fit md:w-3/5 bg-postgray m-2 p-4 rounded-md"
+                >
+                  <div className="flex justify-around">
+                    <p>
+                      Username: <strong>{answer.username}</strong>
+                    </p>
+                    <p>
+                      Time: <strong>{answer.time}</strong>
+                    </p>
+                  </div>
+                  <hr className="h-1 bg-gray border-none" />
+                  <h1 className="font-semibold mb-3">
+                    <strong>{answer.title}</strong>
+                  </h1>
+                  <h3>{answer.post}</h3>
+                </div>
+              </>
             );
           })}
       </div>

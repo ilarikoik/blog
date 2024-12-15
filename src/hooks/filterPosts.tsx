@@ -1,10 +1,6 @@
-interface newPost {
-  postId: string;
-  title: string;
-  school: string;
-  post: string;
-  time: string;
-}
+import { Answer } from "../interfaces/postInterface";
+import { newPost } from "../interfaces/postInterface";
+
 // pitää etukäteen märitellä mitä se ottaa vastaan ja mitä palauttaa kans
 export default function filterBySchool(
   koulu: string,

@@ -61,12 +61,13 @@ export const getData = async () => {
     const posts: newPost[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
-        postId: doc.id, // Assuming the doc id can be used as postId
-        title: data.title,
-        school: data.school,
-        post: data.post,
-        time: data.time,
-        answers: data.answers,
+        postId: doc.id, // firebasen documentin id
+        posterUid: data.posterUid || "",
+        title: data.title || "",
+        school: data.school || "",
+        post: data.post || "",
+        time: data.time || "",
+        answers: data.answers || [],
       };
     });
     return posts;

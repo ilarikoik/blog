@@ -9,17 +9,12 @@ import { DoubleRightOutlined } from "@ant-design/icons";
 import AddPost from "./AddPost.tsx";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUser } from "../auth/userState.tsx";
+import { newPost } from "../interfaces/postInterface.tsx";
 
 interface PostProps {
   searchBy: string;
 }
-interface newPost {
-  postId: string;
-  title: string;
-  school: string;
-  post: string;
-  time: string;
-}
+
 const auth = getAuth();
 export default function Posts({ searchBy }: PostProps) {
   const [post, setPost] = useState<newPost[]>(); // tulee olemaan taulukko täynnä objekteja
@@ -27,10 +22,12 @@ export default function Posts({ searchBy }: PostProps) {
   const navigate = useNavigate(); // tarvii navigoidessa api sisällä
   const [isToggled, setIsToggled] = useState(false);
   const [username, setUsername] = useState(false);
+  const [uid, setUid] = useState("");
 
   useEffect(() => {
     const get = async () => {
       let all = await getData();
+      console.log(all);
       if (all && searchBy !== "Kaikki") {
         let filtered = filterBySchool(searchBy, all);
         setPost(filtered);
@@ -38,7 +35,7 @@ export default function Posts({ searchBy }: PostProps) {
       } else if (all) {
         // jos löytyy nii aseta sitte vasta muute tulee UNDEFINED ...
         let sorted = SortPostByDate(all);
-        setPost(sorted);
+        setPost(all);
       } else {
         setPost([]);
       }
@@ -51,6 +48,8 @@ export default function Posts({ searchBy }: PostProps) {
     const logged = async () => {
       const get = await getUser(); // Assuming this fetches the user data
       let username = get ? await getUserByUid(get?.uid) : "";
+      let getUid = get ? get.uid : "";
+      setUid(getUid);
       if (username && typeof username !== "string" && "username" in username) {
         setUsername(username.username);
       } else {
@@ -75,6 +74,7 @@ export default function Posts({ searchBy }: PostProps) {
     <>
       <div className="w-full justify-center flex text-lg">
         <AddPost
+          uid={uid}
           toggleState={toggleState}
           loggedInUser={loggedInUser}
           toggle={false}
@@ -92,6 +92,7 @@ export default function Posts({ searchBy }: PostProps) {
                   <p className="text-black flex justify-between">
                     <strong>{item.school}</strong>
                     {item.time}
+                    {item.postId}
                   </p>
                   <h3 className="text-black">{item.title}</h3>
                   <p className="text-black text-wrap"> {item.post}</p>
