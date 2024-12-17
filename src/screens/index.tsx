@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Filter from "../components/Filter";
 import Posts from "../components/Posts";
 import GoogleAuth from "../auth/googleAuth";
-import { getData, getUserByUid } from "../firebase/db";
+import { getData, getUserByUid, getUserByUsername } from "../firebase/db";
 import { getUser } from "../auth/userState";
 import CustomAlert from "../components/Modal";
 

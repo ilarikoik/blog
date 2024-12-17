@@ -97,15 +97,20 @@ export default function Posts({ searchBy }: PostProps) {
                   </h3>
                   <hr className="h-1 bg-gray border-none mt-3" />
                   <p className="text-black text-wrap"> {item.post}</p>
-                  <div className="flex justify-end">
-                    <button
-                      className="h-5 border-none hover:underline text-orange-500 text-md "
-                      onClick={() => handleReply(item.postId)}
-                    >
-                      <DoubleRightOutlined
-                        style={{ fontSize: "24px", color: "#f97316" }}
-                      />
-                    </button>
+                  <div className="flex justify-end ">
+                    <div className=" w-fit h-fit flex justify-center items-center p-1">
+                      <button
+                        className="h-fit border-none hover:underline text-orange-500 text-md flex flex-row justify-center "
+                        onClick={() => handleReply(item.postId)}
+                      >
+                        <p className="">
+                          Vastauksia {`(${item.answers.length})`}
+                        </p>
+                        <DoubleRightOutlined
+                          style={{ fontSize: "24px", color: "#f97316" }}
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

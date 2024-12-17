@@ -52,7 +52,7 @@ export const addReply = async (data: Answer, postid: string) => {
 };
 
 export const getData = async () => {
-  console.log("GET data käynnistyy...");
+  //console.log("GET data käynnistyy...");
   try {
     const q = query(collection(db, "postCollection"), orderBy("time", "desc")); // ajaltaan uusin eka
     const querySnapshot = await getDocs(q);
@@ -137,7 +137,7 @@ export const getAllUserData = async () => {
 
 // haetaa usernamen perusteella käyttäjätiedot
 export const getUserByUsername = async (username: string) => {
-  console.log("Haetaan käyttäjä nimellä:", username);
+  //console.log("Haetaan käyttäjä nimellä:", username);
 
   try {
     const q = query(
@@ -162,16 +162,16 @@ export const getUserByUsername = async (username: string) => {
 
 // haetaa uid perusteella käyttäjätiedot
 export const getUserByUid = async (uid: string) => {
-  console.log("Haetaan käyttäjä nimellä:", uid);
+  //console.log("Haetaan käyttäjä nimellä:", uid);
   try {
     const q = query(collection(db, "usernameAndUid"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
-      console.log("Käyttäjää ei löytynyt.");
+      //console.log("Käyttäjää ei löytynyt.");
       return null;
     }
     const userData = querySnapshot.docs[0].data();
-    console.log("Tämähetkinen käyttäjä:", userData);
+    //console.log("Tämähetkinen käyttäjä:", userData);
     return userData;
   } catch (error) {
     console.error("Virhe haettaessa käyttäjää:", error);

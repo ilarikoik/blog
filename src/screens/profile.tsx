@@ -74,24 +74,27 @@ const Profile = () => {
                   className="w-full h-fit md:w-3/5 bg-postgray m-2 p-4 rounded-md flex flex-row"
                 >
                   <div className=" w-full">
-                    <div className=" w-full flex flex-row justify-start mb-3">
-                      <h2 className="w-2/3">
+                    <div className=" w-full flex flex-row justify-between mb-3">
+                      <p className=" flex justify-center items-center">
                         <strong>{item.title}</strong>
-                      </h2>
+                      </p>
+                      <button
+                        className="p-2 text-orange-500 rounded-lg w-fit justify-end flex flex-row hover:underline"
+                        onClick={() => handleThread(item.postId)}
+                      >
+                        <p className="">
+                          Vastauksia {`(${item.answers.length})`}
+                        </p>
+                        <DoubleRightOutlined
+                          style={{ fontSize: "24px", color: "#f97316" }}
+                        />
+                      </button>
                     </div>
                     <hr className="h-1 bg-gray border-none" />
                     <h3>{item.post}</h3>
-                  </div>
-                  <div className=" w-24 h-32 flex items-end ">
-                    <div className="flex items-center justify-end w-full h-full flex-col">
-                      <button className="p-2 text-white rounded-lg w-fit justify-end font-bold">
-                        <DoubleRightOutlined
-                          style={{ fontSize: "24px", color: "#f97316" }}
-                          onClick={() => handleThread(item.postId)}
-                        />
-                      </button>
+                    <div className="w-full flex justify-end">
                       <button
-                        className=" h-5 w-full border-none hover:underline text-red-500 text-md mr-10 flex justify-end items-center hover:font-semibold"
+                        className=" h-5 w-fit border-none hover:underline text-red-500 text-md mr-10 flex justify-end items-center hover:font-semibold"
                         onClick={() => {
                           handleDelete(item.postId);
                           setRender((prev) => !prev);

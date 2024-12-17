@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { addUserNameAndUid } from "../firebase/db";
+import { addUserNameAndUid, getUserByUsername } from "../firebase/db";
 import { getUser } from "../auth/userState";
 
 interface CustomAlertProps {
@@ -40,8 +40,13 @@ export default function CustomAlert({ setShowModal }: CustomAlertProps) {
       uid: uid,
     };
 
+    let unique = await getUserByUsername(inputValue);
+    if (unique !== null) {
+      alert(`${inputValue} on jo käytössä, valitse toinen nimi.`);
+      return;
+    }
     try {
-      console.log("Submitting data:", JSON.stringify(data));
+      //console.log("Submitting data:", JSON.stringify(data));
       await addUserNameAndUid(data);
       closeModal();
     } catch (error) {
