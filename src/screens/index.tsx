@@ -11,6 +11,7 @@ import CustomAlert from "../components/Modal";
 const Index = () => {
   const [searchBy, setSearchBy] = useState("Kaikki");
   const [showModal, setShowModal] = useState(false);
+  const [foundUser, setFoundUser] = useState(false);
 
   const getSchool = (item: string) => {
     setSearchBy(item);
@@ -23,6 +24,7 @@ const Index = () => {
       let data = await getData();
       //console.log( JSON.stringify(data) + "----------------------------------------");
       if (fetchedUser && fetchedUser.uid) {
+        setFoundUser(true);
         const keijo = await getUserByUid(fetchedUser.uid);
         if (!keijo) {
           setShowModal(true);
@@ -35,12 +37,16 @@ const Index = () => {
   }, [searchBy]);
 
   return (
-    <div className="bg-white w-full min-h-screen ">
-      {showModal && <CustomAlert setShowModal={setShowModal} />}
-      <Header></Header>
-      <Filter getSchool={getSchool}></Filter>
-      <Posts searchBy={searchBy}></Posts>
-    </div>
+    <>
+      {foundUser && (
+        <div className="bg-white w-full min-h-screen ">
+          {showModal && <CustomAlert setShowModal={setShowModal} />}
+          <Header></Header>
+          <Filter getSchool={getSchool}></Filter>
+          <Posts searchBy={searchBy}></Posts>
+        </div>
+      )}
+    </>
   );
 };
 export default Index;

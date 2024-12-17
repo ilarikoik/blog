@@ -118,7 +118,7 @@ export default function AddPost({
                 className=" text-orange-500 text-xl flex justify-center items-center"
                 onClick={openModal}
               >
-                {"-->"} uusi julkaisu
+                uusi julkaisu
               </h1>
             </div>
           )}

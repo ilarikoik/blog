@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import Header from "../components/Header";
 import Lottie from "react-lottie";
 import user from "../lottie/user.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import examplePost from "../data/examplePost.json";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { getData, getUserByUid } from "../firebase/db";
 import { newPost } from "../interfaces/postInterface";
 
 const Profile = () => {
+  const navigate = useNavigate(); // tarvii navigoidessa api sisällä
   const [name, setName] = useState("");
   const [userId, setUserId] = useState("");
   const [ownPosts, setOwnPosts] = useState<newPost[]>();
@@ -38,7 +39,10 @@ const Profile = () => {
     };
     fetchUser();
   }, []);
-  // kun klikataan "show thread" lähetetää postin id reply sivulle ja siellä näytetää ne kaikki sitte
+
+  const handleThread = (postId: string) => {
+    navigate("/reply", { state: { postId } });
+  };
   return (
     <>
       <Header></Header>
@@ -78,6 +82,7 @@ const Profile = () => {
                       <button className="p-2 text-white rounded-lg w-fit justify-end  font-bold">
                         <DoubleRightOutlined
                           style={{ fontSize: "24px", color: "#f97316" }}
+                          onClick={() => handleThread(item.postId)}
                         />
                       </button>
                     </div>

@@ -5,7 +5,8 @@ import Reply from "./screens/reply";
 import LoginPage from "./screens/login";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// profiilista replyyn jotta näkee sen threadin
+//jos menee oman profiilin kautta postiin ja koittaa reply nii vastaus ei tallennu
+// siirrä delete nappi omaan profiiliin vaa händlää mitä poistolle tapathuu
 // sorttaus uusin eka postauksissa ei ota huomioo päivämäärää atm
 // jos poistaa postauksen nii pelkkä käyttäjän nimi hävii siitä ? taisit postaus tyhjenee mut vastaukset näkyy kuitenki JA delete nappi profiiliin omiin postauksiin vaan
 function App() {

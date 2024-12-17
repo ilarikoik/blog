@@ -50,7 +50,7 @@ const Reply = () => {
                     className="p-2 text-white rounded-lg w-fit justify-end bg-orange-500 font-bold hover:shadow-lg hover:shadow-orange-700"
                     onClick={handleReply}
                   >
-                    {loggedInUser ? "Reply" : "LogIn to Reply"}
+                    Reply
                   </button>
                 }
                 {isModalOpen && (
