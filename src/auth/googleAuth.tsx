@@ -62,7 +62,7 @@ const GoogleAuth = () => {
             className="text-red-500 font-semibold hover:underline "
             onClick={handleLogOut}
           >
-            Sign Out
+            Kirjaudu ulos
           </Link>
         </>
       ) : (
@@ -71,7 +71,7 @@ const GoogleAuth = () => {
           className="text-blue font-semibold hover:underline "
           onClick={handleGoogleLogin}
         >
-          Sign in with Google
+          Kirjaudu sisään Googlella
         </Link>
       )}
     </div>

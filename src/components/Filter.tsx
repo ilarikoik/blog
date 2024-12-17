@@ -6,20 +6,14 @@ interface FilterProps {
 }
 
 export default function Filter({ getSchool }: FilterProps) {
-  // hae kaiki koulut suoraa databasesta DESC
-
   return (
     <>
       <div className="h-12 bg-white w-full flex justify-around items-center lg:justify-evenly mb-7">
         <section className="">
-          <label className="font-sans text-md" htmlFor="">
-            Koulu:{" "}
-          </label>
           <select
             onChange={(e) => getSchool(e.target.value)}
-            className="border-none rounded-md p-1"
+            className=" rounded-md p-1 border-2 border-postgray"
           >
-            <option></option>
             {schools.length > 0
               ? schools.map((item, index) => {
                   return (
@@ -32,7 +26,7 @@ export default function Filter({ getSchool }: FilterProps) {
             {/* Render options if schools array has data */}
           </select>
         </section>
-        <section>
+        {/* <section>
           <label htmlFor="" className="font-sans text-md">
             Hakutapa:{" "}
           </label>
@@ -42,7 +36,7 @@ export default function Filter({ getSchool }: FilterProps) {
             <option>Vanhin</option>
             <option>Tykätyin </option>
           </select>
-        </section>
+        </section> */}
       </div>
     </>
   );

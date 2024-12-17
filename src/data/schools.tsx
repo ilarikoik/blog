@@ -4,5 +4,4 @@ export const schools = [
   "Metropolia",
   "Turun AMK",
   "Laurea",
-  "ok",
 ];

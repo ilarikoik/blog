@@ -42,6 +42,8 @@ const Reply = () => {
             <>
               <div className=" flex flex-row justify-center items-center">
                 <div className="flex flex-col justify-between w-full ">
+                  <p className="  mb-2">{post.time}</p>
+                  <p className="  mb-2 underline">{username}</p>
                   <p className="font-semibold text-xl  mb-2"> {post.school}</p>
                   <h1 className="font-semibold text-lg mb-2">{post.title}</h1>
                 </div>

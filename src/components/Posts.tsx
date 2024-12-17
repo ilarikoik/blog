@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import filterBySchool from "../hooks/filterPosts.tsx";
 import { getData, getUserByUid } from "../firebase/db.tsx";
-import SortPostByDate from "../hooks/sortPostByDate.tsx";
-import { handleDelete } from "../hooks/handleDelete.tsx";
-import { Link, Navigate } from "react-router-dom";
+import SortPostByDateNewest from "../hooks/sortPostByDate.tsx";
 import { useNavigate } from "react-router-dom";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import AddPost from "./AddPost.tsx";
@@ -30,12 +28,13 @@ export default function Posts({ searchBy }: PostProps) {
       console.log(all);
       if (all && searchBy !== "Kaikki") {
         let filtered = filterBySchool(searchBy, all);
-        setPost(filtered);
+        let sorted = SortPostByDateNewest(filtered);
+        setPost(sorted);
         console.log(filtered + "BY " + searchBy);
       } else if (all) {
         // jos löytyy nii aseta sitte vasta muute tulee UNDEFINED ...
-        let sorted = SortPostByDate(all);
-        setPost(all);
+        let sorted = SortPostByDateNewest(all);
+        setPost(sorted);
       } else {
         setPost([]);
       }
@@ -92,20 +91,13 @@ export default function Posts({ searchBy }: PostProps) {
                   <p className="text-black flex justify-between">
                     <strong>{item.school}</strong>
                     {item.time}
-                    {item.postId}
                   </p>
-                  <h3 className="text-black">{item.title}</h3>
+                  <h3 className="text-black">
+                    <strong>{item.title}</strong>
+                  </h3>
+                  <hr className="h-1 bg-gray border-none mt-3" />
                   <p className="text-black text-wrap"> {item.post}</p>
                   <div className="flex justify-end">
-                    <button
-                      onClick={() => {
-                        handleDelete(item.postId);
-                        setRender((prev) => prev + 1);
-                      }}
-                      className="h-5 border-none hover:underline text-red-500 text-md mr-10"
-                    >
-                      Delete
-                    </button>
                     <button
                       className="h-5 border-none hover:underline text-orange-500 text-md "
                       onClick={() => handleReply(item.postId)}

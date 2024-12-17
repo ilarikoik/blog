@@ -1,6 +1,6 @@
 export const loggedInSites = [
-  { name: "Home", screen: "/" },
+  { name: "Etusivu", screen: "/" },
   //{ name: "Make a Post" },
-  { name: "Profile", screen: "/profile" },
+  { name: "Profiili", screen: "/profile" },
   //{ name: "Logout", screen: "" },
 ];

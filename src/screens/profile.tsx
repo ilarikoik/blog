@@ -4,16 +4,18 @@ import Lottie from "react-lottie";
 import user from "../lottie/user.json";
 import { Link, useNavigate } from "react-router-dom";
 import examplePost from "../data/examplePost.json";
-import { DoubleRightOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { getUser } from "../auth/userState";
 import { getData, getUserByUid } from "../firebase/db";
 import { newPost } from "../interfaces/postInterface";
+import { handleDelete } from "../hooks/handleDelete";
 
 const Profile = () => {
   const navigate = useNavigate(); // tarvii navigoidessa api sisällä
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
+  const [render, setRender] = useState(false);
   const [ownPosts, setOwnPosts] = useState<newPost[]>();
   const options = {
     animationData: user,
@@ -33,15 +35,15 @@ const Profile = () => {
       if (fetchedUser?.uid) {
         let ukko = await getUserByUid(fetchedUser?.uid);
         if (ukko) {
-          setName(ukko.username);
+          setUsername(ukko.username);
         }
       }
     };
     fetchUser();
-  }, []);
+  }, [render]);
 
   const handleThread = (postId: string) => {
-    navigate("/reply", { state: { postId } });
+    navigate("/reply", { state: { postId, username } });
   };
   return (
     <>
@@ -52,7 +54,7 @@ const Profile = () => {
           <div className="flex flex-col justify-center items-center w-full h-24">
             <div className="w-fit ">
               <p className="underline font-semibold">
-                {name ? name : "stranger"}
+                {username ? username : "stranger"}
               </p>
               <p>Omien postauksien määrä: {ownPosts?.length}</p>
             </div>
@@ -72,18 +74,31 @@ const Profile = () => {
                   className="w-full h-fit md:w-3/5 bg-postgray m-2 p-4 rounded-md flex flex-row"
                 >
                   <div className=" w-full">
-                    <h2>
-                      <strong>{item.title}</strong>
-                    </h2>
+                    <div className=" w-full flex flex-row justify-start mb-3">
+                      <h2 className="w-2/3">
+                        <strong>{item.title}</strong>
+                      </h2>
+                    </div>
+                    <hr className="h-1 bg-gray border-none" />
                     <h3>{item.post}</h3>
                   </div>
-                  <div className=" w-32 h-30 flex items-end">
-                    <div className="flex justify-end w-full ">
-                      <button className="p-2 text-white rounded-lg w-fit justify-end  font-bold">
+                  <div className=" w-24 h-32 flex items-end ">
+                    <div className="flex items-center justify-end w-full h-full flex-col">
+                      <button className="p-2 text-white rounded-lg w-fit justify-end font-bold">
                         <DoubleRightOutlined
                           style={{ fontSize: "24px", color: "#f97316" }}
                           onClick={() => handleThread(item.postId)}
                         />
+                      </button>
+                      <button
+                        className=" h-5 w-full border-none hover:underline text-red-500 text-md mr-10 flex justify-end items-center hover:font-semibold"
+                        onClick={() => {
+                          handleDelete(item.postId);
+                          setRender((prev) => !prev);
+                        }}
+                      >
+                        Poista
+                        <DeleteOutlined style={{ fontSize: 20 }} />
                       </button>
                     </div>
                   </div>
