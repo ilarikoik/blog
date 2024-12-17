@@ -115,7 +115,7 @@ export default function AddPost({
           {loggedInUser && (
             <div className="bg-white h-fit rounded-xl w-fit p-2 cursor-pointer border-2 border-postgray hover:border-orange-500 hover:shadow-md hover:shadow-orange-500 mb-5">
               <h1
-                className=" text-orange-500 text-xl flex justify-center items-center"
+                className=" text-orange-500 md:text-xl flex justify-center items-center"
                 onClick={openModal}
               >
                 uusi julkaisu

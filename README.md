@@ -1,50 +1,18 @@
-# React + TypeScript + Vite
+Kuvaus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tämä sovellus on luotu korkeakouluopiskelijoiden väliseen keskusteluun ja "blogimaisten" postauksien luomiseen. Sovelluksessa käyttäjät voivat jakaa ajatuksiaan ja postauksiaan eri aiheista, keskustella muiden opiskelijoiden kanssa ja saada ideoita muilta korkeakouluopiskelijoilta.
 
-Currently, two official plugins are available:
+Sovellus on rakennettu React-kirjastolla, TypeScriptillä vahvistetun tyypityksen ja luotettavan koodin kirjoittamisen tueksi. Firebase tarjoaa autentikoinnin ja tietokannan, jotta käyttäjät voivat luoda tilejä, kirjautua sisään ja tallentaa omat postauksensa pilvipalveluun.
+Ominaisuudet:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    Käyttäjien rekisteröinti ja kirjautuminen Firebase-autentikoinnin avulla.
+    Käyttäjät voivat luoda, lukea, päivittää ja poistaa postauksia, jotka tallennetaan Firebase-tietokantaan.
+    Interaktiiviset keskustelut: Käyttäjät voivat kommentoida ja keskustella toistensa postauksista.
+    Sovellus tukee responsiivista käyttöliittymää, joka mukautuu eri laitteille.
 
-## Expanding the ESLint configuration
+Teknologiat:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+    React ja TypeScript käyttöliittymän rakentamiseen.
+    Firebase Authentication käyttäjien rekisteröintiä ja kirjautumista varten.
+    Firebase Firestore tietokannan hallintaan ja datan tallentamiseen.
+    CSS ja styled-components responsiivisen ja modernin ulkoasun luomiseen.

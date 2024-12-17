@@ -91,9 +91,7 @@ const Reply = () => {
                     <p>{answer.time}</p>
                   </div>
                   <hr className="h-1 bg-gray border-none" />
-                  <h1 className="font-semibold mb-3">
-                    <strong>{answer.title}</strong>
-                  </h1>
+                  <h1 className="font-semibold mb-3">{answer.title}</h1>
                   <h3>{answer.post}</h3>
                 </div>
               </>
