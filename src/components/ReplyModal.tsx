@@ -27,7 +27,6 @@ export default function ReplyModal({ username, postId }: ModalProps) {
   useEffect(() => {
     const fetchUser = async () => {
       const fetchedUser = await getUser();
-      //console.log(JSON.stringify(fetchedUser));
       if (fetchedUser && fetchedUser.uid) {
         setUid(fetchedUser.uid);
       } else {
@@ -63,6 +62,9 @@ export default function ReplyModal({ username, postId }: ModalProps) {
     }
   };
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <Modal
@@ -110,7 +112,7 @@ export default function ReplyModal({ username, postId }: ModalProps) {
                 Submit
               </button>
               <button
-                onClick={() => console.log("cancel reply")}
+                onClick={handleCancel}
                 className="mr-2 bg-blue-500 text-red-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Cancel

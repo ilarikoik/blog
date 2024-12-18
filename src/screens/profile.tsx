@@ -4,7 +4,11 @@ import Lottie from "react-lottie";
 import user from "../lottie/user.json";
 import { Link, useNavigate } from "react-router-dom";
 import examplePost from "../data/examplePost.json";
-import { DeleteOutlined, DoubleRightOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  DoubleRightOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { getUser } from "../auth/userState";
 import { getData, getUserByUid } from "../firebase/db";
@@ -78,6 +82,12 @@ const Profile = () => {
                       <p className=" flex justify-center items-center">
                         <strong>{item.title}</strong>
                       </p>
+                      {/* <div className="w-fit flex justify-center items-center text-orange-500 hover:underline">
+                        <EditOutlined
+                          style={{ fontSize: "24px", color: "#f97316" }}
+                        />
+                        Päivitä{" // " + item.postId}
+                      </div> */}
                       <button
                         className="p-2 text-orange-500 rounded-lg w-fit justify-end flex flex-row hover:underline"
                         onClick={() => handleThread(item.postId)}

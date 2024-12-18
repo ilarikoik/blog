@@ -25,12 +25,10 @@ export default function Posts({ searchBy }: PostProps) {
   useEffect(() => {
     const get = async () => {
       let all = await getData();
-      console.log(all);
       if (all && searchBy !== "Kaikki") {
         let filtered = filterBySchool(searchBy, all);
         let sorted = SortPostByDateNewest(filtered);
         setPost(sorted);
-        console.log(filtered + "BY " + searchBy);
       } else if (all) {
         // jos löytyy nii aseta sitte vasta muute tulee UNDEFINED ...
         let sorted = SortPostByDateNewest(all);
@@ -66,7 +64,6 @@ export default function Posts({ searchBy }: PostProps) {
   };
 
   const handleReply = (postId: string) => {
-    console.log(postId);
     navigate("/reply", { state: { postId, loggedInUser, username } });
   };
   return (

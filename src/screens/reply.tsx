@@ -23,7 +23,6 @@ const Reply = () => {
       }
       if (ref) {
         setPost(ref);
-        console.log(post);
       } else {
         console.log("Virhe haettaessa postId reply screeniä varten");
       }
@@ -34,9 +33,6 @@ const Reply = () => {
   const handleReply = () => {
     console.log(post, postId);
     setIsModalOpen(true);
-  };
-  const handleLogin = () => {
-    console.log("KIRJAUDU");
   };
 
   // nyt lataa sivun uudellee aina kun submit reply , saattaa aiheuttaa ongelmia ku komponentit ladataa uudelleen nii ehkä jää tyhjäks ???
@@ -75,15 +71,15 @@ const Reply = () => {
         </div>
       </div>
 
-      <div className="flex justify-center flex-col items-end mt-10">
+      <div className="flex justify-center flex-col items-end mt-10 ">
         {/*uusin alimmaks voi lukee postauksesta eteepäi keskustelua */}
         {post &&
           Array.isArray(post.answers) &&
-          post.answers.map((answer, id) => {
+          post.answers.map((answer, index) => {
             return (
               <>
                 <div
-                  key={id}
+                  key={index}
                   className="w-full h-fit md:w-3/5 bg-postgray m-2 p-4 rounded-md"
                 >
                   <div className="flex justify-around mb-2">

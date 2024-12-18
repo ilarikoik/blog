@@ -58,7 +58,7 @@ const GoogleAuth = () => {
       {user ? (
         <>
           <Link
-            to="/login"
+            to="/"
             className="text-red-500 font-semibold hover:underline "
             onClick={handleLogOut}
           >
@@ -67,7 +67,7 @@ const GoogleAuth = () => {
         </>
       ) : (
         <Link
-          to="/"
+          to="/index"
           className="text-blue font-semibold hover:underline "
           onClick={handleGoogleLogin}
         >
