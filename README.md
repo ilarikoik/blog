@@ -18,8 +18,8 @@ Teknologiat:
     Firebase Firestore tietokannan hallintaan ja datan tallentamiseen.
     Tailwind responsiivisen ja ulkoasun luomiseen.
 
-<img src="src\assets\bgl2.png" alt="Etusivu" width="600">
-<img src="src\assets\blg1.png" alt="Vastaa" width="300">
-<img src="src\assets\blg3.png" alt="Profiili" width="600">
+<img src="src\assets\bgl2.png" alt="Etusivu" width="700">
+<img src="src\assets\blg1.png" alt="Vastaa" width="700">
+<img src="src\assets\blg3.png" alt="Profiili" width="700">
 <img src="src\assets\bgl4.png" alt="Mobiiliprofiili" width="300">
 <img src="src\assets\blg5.png" alt="Mobiilietusivu" width="300">
